@@ -60,13 +60,16 @@ function [ A_out, t_out, r_out ] = BiRed( A, t, r )
     %------------------------------------------------------------%
     [ alpha11, ...
       a21, tau1 ] = Housev( alpha11, ...
-                              a21 );               
+                              a21 );
+    % Apply H to the left
     w12t = (a12t + a21' * A22) / tau1;
     a12t = a12t - w12t;
     A22  = A22 - a21 * w12t;
 
+    % No need to zero out the row if there's nothing to zero out
     if (~isempty(a12t))
       [ u12, rho1 ] = Housev1(a12t');
+      % Apply H to the right
       a12t = u12';
       u12(1) = 1;
       x12 = A22 * u12;

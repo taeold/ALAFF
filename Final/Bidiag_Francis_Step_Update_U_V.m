@@ -20,7 +20,8 @@ function [ U_next, Bi_next, V_next ] = Bidiag_Francis_Step_Update_U_V(Ui, Bi, Vi
   coli = A(:,1);
   A(:,1) = coli * G(1,1) + A(:,2) * G(2,1);
   A(:,2) = coli * G(1,2) + A(:,2) * G(2,2);
-  
+
+  %% NEW - Apply Givens rotation to V
   % Apply G to V from the right
   coli = V(:,1);
   V(:,1) = coli * G(1,1) + V(:,2) * G(2,1);
@@ -38,6 +39,7 @@ function [ U_next, Bi_next, V_next ] = Bidiag_Francis_Step_Update_U_V(Ui, Bi, Vi
       A(i-1,:) = G(1,1) * rowi + G(2,1) * A(i,:);
       A(i,:) = G(1,2) * rowi + G(2,2) * A(i,:);
       
+      %% NEW - Apply Givens rotation to U
       % Apply to U from the right
       coli = U( :,j );
       U(:,j) = coli * G(1,1) + U(:,j+1) * G(2,1);
@@ -50,6 +52,7 @@ function [ U_next, Bi_next, V_next ] = Bidiag_Francis_Step_Update_U_V(Ui, Bi, Vi
       A(:,j-1) = coli * G(1,1) + A(:,j) * G(2,1);
       A(:,j) = coli * G(1,2) + A(:,j) * G(2,2);
 
+      %% NEW - Apply Givens rotation to V
       % Apply to V from the right
       coli = V(:,j-1);
       V(:,j-1) = coli * G(1,1) + V(:,j) * G(2,1);
@@ -67,7 +70,8 @@ function [ U_next, Bi_next, V_next ] = Bidiag_Francis_Step_Update_U_V(Ui, Bi, Vi
   rowi = A(m-1,:);
   A(m-1,:) = G(1,1) * rowi + G(2,1) * A(m,:);
   A(m,:) = G(1,2) * rowi + G(2,2) * A(m,:);
-  
+
+  %% NEW - Apply Givens rotation to U
   % Apply to U from the right
   coli = U(:,m-1);
   U(:,m-1) = coli * G(1,1) + U(:,m) * G(2,1);
